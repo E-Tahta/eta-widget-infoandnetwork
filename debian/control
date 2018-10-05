@@ -1,0 +1,14 @@
+Source: eta-widget-infoandnetwork
+Section: utils
+Priority: optional
+Maintainer: Yunusemre Şentürk <yunusemre.senturk@pardus.org.tr>
+Build-Depends: debhelper (>= 9),
+Standards-Version: 3.9.6
+Homepage: http://etap.org.tr
+
+Package: eta-widget-infoandnetwork
+Architecture: amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, plasma-nm
+Description: ETAP Saat Kullanıcı ve Ağ bilgisi gereci
+ Kullanıcıya rahat kullanım sunan bazı sistem bilgilerini
+ içeren plasma gereci.
