@@ -8,7 +8,7 @@ Homepage: http://etap.org.tr
 
 Package: eta-widget-infoandnetwork
 Architecture: amd64
-Depends: ${shlibs:Depends}, ${misc:Depends}, plasma-nm
+Depends: ${shlibs:Depends}, ${misc:Depends}, plasma-nm, eta-engine
 Description: ETAP Saat Kullanıcı ve Ağ bilgisi gereci
  Kullanıcıya rahat kullanım sunan bazı sistem bilgilerini
  içeren plasma gereci.
