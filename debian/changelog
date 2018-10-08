@@ -1,3 +1,9 @@
+eta-widget-infoandnetwork (1.1) unstable; urgency=medium
+
+  * Add eta-engine to depends
+
+ -- Yunusemre Şentürk <yunusemre.senturk@pardus.org.tr>  Mon, 08 Oct 2018 09:04:17 +0300
+
 eta-widget-infoandnetwork (1.0) unstable; urgency=medium
 
   * Initial release.
