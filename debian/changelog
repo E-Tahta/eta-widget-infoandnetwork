@@ -1,3 +1,9 @@
+eta-widget-infoandnetwork (1.2) unstable; urgency=medium
+
+  * Fix Fullname appearance
+
+ -- Yunusemre Şentürk <yunusemre.senturk@pardus.org.tr>  Fri, 19 Oct 2018 14:32:49 +0300
+
 eta-widget-infoandnetwork (1.1) unstable; urgency=medium
 
   * Add eta-engine to depends
