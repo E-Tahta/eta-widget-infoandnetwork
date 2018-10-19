@@ -1,22 +1,22 @@
-/*
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) version 3, or any
-    later version accepted by the membership of KDE e.V. (or its
-    successor approved by the membership of KDE e.V.), which shall
-    act as a proxy defined in Section 6 of version 3 of the license.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/*****************************************************************************
+ *   Copyright (C) 2018 by Yunusemre Şentürk                                 *
+ *   <yunusemre.senturk@pardus.org.tr>                                       *
+ *                                                                           *
+ *   This program is free software; you can redistribute it and/or modify    *
+ *   it under the terms of the GNU General Public License as published by    *
+ *   the Free Software Foundation; either version 2 of the License, or       *
+ *   (at your option) any later version.                                     *
+ *                                                                           *
+ *   This program is distributed in the hope that it will be useful,         *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of          *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           *
+ *   GNU General Public License for more details.                            *
+ *                                                                           *
+ *   You should have received a copy of the GNU General Public License       *
+ *   along with this program; if not, write to the                           *
+ *   Free Software Foundation, Inc.,                                         *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .          *
+ *****************************************************************************/
 
 import QtQuick 1.1
 import Qt 4.7
@@ -54,56 +54,45 @@ Item {
             width: minimumWidth
             height: topPartHeight / 2
             color: containerBackgroundColor
-            Row {
+
+            Item {
+                id: textclockcontainer
                 anchors {
+                    left: parent.left
+                    leftMargin: leftrightAlign
                     top: parent.top
-                    topMargin: 0
-                    fill: parent
+                    topMargin: lineAlign
+                    verticalCenter: parent.verticalCenter
                 }
-                Item {
-                    id: textclockcontainer
-                    anchors {
-                        left: parent.left
-                        leftMargin: leftrightAlign
-                        top: parent.top
-                        topMargin: lineAlign
-                        verticalCenter: parent.verticalCenter
+                Column {
+                    spacing: 1
+                    Text {
+                        id: date
+                        font.family: textFont
+                        font.pointSize: minimumWidth * 3 / 100
+                        text: Qt.formatDate(
+                                  dataSource.data["Local"]["Date"],
+                                  "dddd, d MMMM yyyy")
+                        color: containerTextColor
+                        horizontalAlignment: Text.AlignLeft
+                        anchors {
+                            left: parent.left
+                            leftMargin: 0
+                        }
                     }
-                    Column {
-                        Text {
-                            id: date
-                            font.family: textFont
-                            font.pointSize: minimumWidth * 3 / 100
-                            text: Qt.formatDate(
-                                      dataSource.data["Local"]["Date"],
-                                      "dddd, d MMMM yyyy")
-                            color: containerTextColor
-                            horizontalAlignment: Text.AlignLeft
-                            anchors {
-                                left: parent.left
-                                leftMargin: 0
-                            }
-                        } //textdate
-                        Text {
-                            id: time
-                            font.bold: true
-                            font.family: textFont
-                            font.pointSize: minimumWidth * 11 / 100
-                            text: (Qt.formatTime(
-                                       dataSource.data["Local"]["Time"],
-                                       "h:mmap")).toString().slice(0, -2)
-                            color: containerTextColor
-                            horizontalAlignment: Text.AlignLeft
-                            anchors {
-                                top: date.bottom
-                                topMargin: 1
-                                left: parent.left
-                                leftMargin: 0
-                            }
-                        } //texttime
-                    } // Column
-                } // Item textclockcontainer
-            } //Row
+                    Text {
+                        id: time
+                        font.bold: true
+                        font.family: textFont
+                        font.pointSize: minimumWidth * 11 / 100
+                        text: (Qt.formatTime(
+                                   dataSource.data["Local"]["Time"],
+                                   "h:mmap")).toString().slice(0, -2)
+                        color: containerTextColor
+                        horizontalAlignment: Text.AlignLeft
+                    }
+                }
+            }
         }
 
         Rectangle {
@@ -141,47 +130,44 @@ Item {
                 Rectangle {
                     id: labelcontainer
                     color: "transparent"
-                    width: minimumWidth / 2 - lineAlign
+                    width: minimumWidth - networkcontainer.width - 2 * leftrightAlign + 3
                     height: topPartHeight / 2 - 2
                     anchors {
                         verticalCenter: parent.verticalCenter
                     }
                     Column {
                         id: infoColumn
+                        width: parent.width
+                        height: parent.height / 2
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.verticalCenterOffset: 5
                         spacing: 3
-                        anchors {
-                            left: parent.left
-                            leftMargin: 0
-                            verticalCenter: parent.verticalCenter
-                        }
                         Text {
                             id: nameSurname
+                            width: parent.width
                             font.family: textFont
                             text: userDataSource.data["Local"]["fullname"].toUpperCase()
                             color: containerTextColor
-                            font.pointSize: minimumWidth * 5 / 100
+                            font.pointSize: 11
                             font.bold: true
-                            elide: Text.ElideLeft
+                            verticalAlignment: Text.AlignVCenter
+                            elide: Text.ElideRight
                             horizontalAlignment: Text.AlignLeft
-                            anchors {
-                                left: parent.left
-                                leftMargin: 0
-                            }
-                        } //label
+                        }
+
                         Text {
                             id: branch
+                            width: parent.width
                             font.family: textFont
-                            text: userDataSource.data["Local"]["loginname"] // hocabranş
+                            text: userDataSource.data["Local"]["loginname"]
                             color: containerTextColor
                             font.pointSize: minimumWidth * 3 / 100
                             font.bold: false
+                            verticalAlignment: Text.AlignVCenter
                             elide: Text.ElideLeft
                             horizontalAlignment: Text.AlignLeft
-                            anchors {
-                                left: parent.left
-                                leftMargin: 0
-                            }
-                        } //label
+
+                        }
                     }
                 }
 
@@ -192,9 +178,9 @@ Item {
                 id: networkcontainer
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.right: parent.right
-                anchors.rightMargin: leftrightAlign
+                anchors.rightMargin: leftrightAlign - 5
                 color: "transparent"
-                height: infoColumn.height + 6
+                height: infoColumn.height
                 width: height
                 PlasmaCore.Svg {
                     id: svgIcons

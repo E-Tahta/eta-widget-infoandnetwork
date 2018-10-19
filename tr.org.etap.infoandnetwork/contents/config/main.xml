@@ -12,6 +12,10 @@
     <entry name="showSections" type="Bool">
         <default>true</default>
     </entry>
+    <entry name="textFont" type="String">
+      <label>Font:</label>
+      <default>Open Symbol</default>
+    </entry>
     <entry name="networkSpeedUnit" type="Enum">
       <choices name="NetworkSpeedUnitChoices">
         <choice name="KBytes"/>
