@@ -131,7 +131,7 @@ ListItem {
                 verticalCenter: connectionSvgIcon.verticalCenter;
             }
 
-            opacity: connectionItem.containsMouse ? 1 : 0
+            opacity: connectionItem.containsMouse ? 1 : 0.9
             visible: opacity != 0
             text: (ConnectionState == PlasmaNM.Enums.Deactivated) ? i18n("Connect") : i18n("Disconnect");
 
@@ -292,15 +292,30 @@ ListItem {
                 echoMode: showPasswordCheckbox.checked ? TextInput.Normal : TextInput.Password
                 placeholderText: i18n("Password...");
                 validator: RegExpValidator {
-                                regExp: if (SecurityType == PlasmaNM.Enums.StaticWep) {
-                                            /^(?:[\x20-\x7F]{5}|[0-9a-fA-F]{10}|[\x20-\x7F]{13}|[0-9a-fA-F]{26}){1}$/
-                                        } else {
-                                            /^(?:[\x20-\x7F]{8,64}){1}$/
-                                        }
-                                }
+                    regExp: if (SecurityType == PlasmaNM.Enums.StaticWep) {
+                                /^(?:[\x20-\x7F]{5}|[0-9a-fA-F]{10}|[\x20-\x7F]{13}|[0-9a-fA-F]{26}){1}$/
+                            } else {
+                                /^(?:[\x20-\x7F]{8,64}){1}$/
+                            }
+                }
+
+                onActiveFocusChanged: {
+                    if(activeFocus) {
+                        if(showPasswordCheckbox.checked) {
+                            plasmoid.runCommand("qdbus",["org.eta.virtualkeyboard",
+                                                         "/VirtualKeyboard",
+                                                         "org.eta.virtualkeyboard.show", false]);
+                        } else {
+                            plasmoid.runCommand("qdbus",["org.eta.virtualkeyboard",
+                                                         "/VirtualKeyboard",
+                                                         "org.eta.virtualkeyboard.show", true]);
+                        }
+                    }
+                }
 
                 onAccepted: {
                     stateChangeButton.clicked();
+
                 }
 
                 onAcceptableInputChanged: {
@@ -318,6 +333,19 @@ ListItem {
                 }
                 checked: false;
                 text: i18n("Show password");
+                onCheckedChanged: {
+                    if(connectionItem.state == "expandedPasswordDialog") {
+                        if(checked) {
+                            plasmoid.runCommand("qdbus",["org.eta.virtualkeyboard",
+                                                         "/VirtualKeyboard",
+                                                         "org.eta.virtualkeyboard.show", false]);
+                        } else {
+                            plasmoid.runCommand("qdbus",["org.eta.virtualkeyboard",
+                                                         "/VirtualKeyboard",
+                                                         "org.eta.virtualkeyboard.show", true]);
+                        }
+                    }
+                }
             }
 
             Component.onCompleted: {
@@ -330,7 +358,7 @@ ListItem {
         }
     }
 
-   states: [
+    states: [
         State {
             name: "collapsed";
             when: !(visibleDetails || visiblePasswordDialog);
@@ -379,6 +407,7 @@ ListItem {
             }
         } else if (predictableWirelessPassword) {
             visiblePasswordDialog = true;
+
         }
     }
 
@@ -400,10 +429,10 @@ ListItem {
             return result;
         } else if (ConnectionState == PlasmaNM.Enums.Activated) {
             if (Type == PlasmaNM.Enums.Wimax ||
-                Type == PlasmaNM.Enums.Wired ||
-                Type == PlasmaNM.Enums.Wireless ||
-                Type == PlasmaNM.Enums.Gsm ||
-                Type == PlasmaNM.Enums.Cdma) {
+                    Type == PlasmaNM.Enums.Wired ||
+                    Type == PlasmaNM.Enums.Wireless ||
+                    Type == PlasmaNM.Enums.Gsm ||
+                    Type == PlasmaNM.Enums.Cdma) {
                 return i18n("Bağlandı, ⬇ %1, ⬆ %2", Download, Upload);
             } else {
                 return i18n("Bağlandı");

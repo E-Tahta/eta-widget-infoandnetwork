@@ -11,6 +11,7 @@ X-Plasma-MainScript=ui/main.qml
 X-Plasma-DefaultSize=270,180
 X-Plasma-NotificationArea=true
 X-Plasma-ConfigPlugins=networkmanagement_notifications
+X-Plasma-RequiredExtensions=LaunchApp
 
 X-KDE-PluginInfo-Name=tr.org.etap.infoandnetwork
 X-KDE-PluginInfo-Category=System Information
